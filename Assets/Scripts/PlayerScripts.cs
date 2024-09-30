@@ -49,7 +49,7 @@ public class PlayerScripts : MonoBehaviour
         }
         if (collision.gameObject.tag == "superspring")
         {
-            player.AddForce(new Vector3(0, 70, 0), ForceMode2D.Impulse);
+            player.AddForce(new Vector3(0, 100, 0), ForceMode2D.Impulse);
         }
     }
 
