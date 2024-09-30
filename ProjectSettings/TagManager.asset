@@ -9,6 +9,8 @@ TagManager:
   - collectable
   - collectioncheck
   - superspring
+  - bird
+  - collectioncheck2
   layers:
   - Default
   - TransparentFX

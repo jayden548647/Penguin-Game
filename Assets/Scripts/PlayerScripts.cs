@@ -3,7 +3,7 @@ using NUnit.Framework.Constraints;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class PlayerScripts : MonoBehaviour
 {
@@ -13,13 +13,14 @@ public class PlayerScripts : MonoBehaviour
     public SpriteRenderer sr;
     bool isGrounded = true;
     int collections = 0;
+
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
-     
+
     }
     bool attacked = false;
-   
+
     private void OnCollisionStay2D(Collision2D collision)
     {
         isGrounded = true;
@@ -30,6 +31,8 @@ public class PlayerScripts : MonoBehaviour
     {
         isGrounded = false;
     }
+
+    
 
 
    private void OnCollisionEnter2D(Collision2D collision)
@@ -43,13 +46,17 @@ public class PlayerScripts : MonoBehaviour
         {
             player.AddForce(new Vector3(0, 40, 0), ForceMode2D.Impulse);
         }
-        if (collision.gameObject.tag == "collectioncheck" && collections < 10)
+        if (collision.gameObject.tag == "collectioncheck" && collections <= 10)
         {
             Destroy(collision.gameObject);
         }
         if (collision.gameObject.tag == "superspring")
         {
             player.AddForce(new Vector3(0, 100, 0), ForceMode2D.Impulse);
+        }
+        if (collision.gameObject.tag == "collectioncheck2" && collections >= 14)
+        {
+            Destroy(collision.gameObject);
         }
     }
 
@@ -66,7 +73,9 @@ public class PlayerScripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        float py = transform.position.y;
+        float px = transform.position.x;
+        float pv = player.velocityY;
          
         anim.SetBool("isMoving", false);
         anim.SetBool("jump", false);
@@ -117,6 +126,8 @@ public class PlayerScripts : MonoBehaviour
         {
             player.AddForce(new Vector3(0, -15, 0), ForceMode2D.Impulse);
         }
+
+      
     }
 
     public void AttackFrame()

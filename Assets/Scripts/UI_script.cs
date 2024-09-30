@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_script : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public Transform player;
     void Start()
     {
         
@@ -13,6 +13,6 @@ public class UI_script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.transform.position + new Vector3(-36, 25, -1);
+        transform.position = player.transform.position + new Vector3(-70, 35, -5);
     }
 }
