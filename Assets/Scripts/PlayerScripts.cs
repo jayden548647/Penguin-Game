@@ -11,21 +11,34 @@ public class PlayerScripts : MonoBehaviour
     Rigidbody2D player;
     public Animator anim;
     public SpriteRenderer sr;
-    bool isGrounded = true;
+    bool isGrounded = false;
     int collections = 0;
+    public LayerMask groundLayerMask;
+    
+    
+
+    bool IsGrounded()
+    {
+        Vector2 position = transform.position;
+        Vector2 direction = Vector2.down;
+        float distance = 1.0f;
+        RaycastHit2D hit = Physics2D.Raycast(position, direction, distance, groundLayerMask);
+        if (hit.collider != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
 
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
-
+        groundLayerMask = LayerMask.GetMask("Ground");
+        
     }
     bool attacked = false;
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        isGrounded = true;
-        attacked = false;
-    }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -73,9 +86,7 @@ public class PlayerScripts : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float py = transform.position.y;
-        float px = transform.position.x;
-        float pv = player.velocityY;
+        sr.color = Color.white;
          
         anim.SetBool("isMoving", false);
         anim.SetBool("jump", false);
@@ -122,16 +133,45 @@ public class PlayerScripts : MonoBehaviour
                 }
             }
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (player.velocityY < 0 || player.velocityY > 0)
         {
-            player.AddForce(new Vector3(0, -15, 0), ForceMode2D.Impulse);
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                player.AddForce(new Vector3(0, -15, 0), ForceMode2D.Impulse);
+            }
         }
 
+        if (player.position.y < -800)
+        {
+            sr.color = Color.black;
+        }
+
+        DoRayCollisionCheck();
       
     }
-
-    public void AttackFrame()
+    public void DoRayCollisionCheck()
     {
-        print("attack!!");
+        float rayLength = 1f; // length of raycast
+
+
+        //cast a ray downward 
+        RaycastHit2D hit;
+
+        hit = Physics2D.Raycast(transform.position, Vector2.down, rayLength, groundLayerMask);
+
+        Color hitColor = Color.red;
+
+
+        if (hit.collider != null)
+        {
+            hitColor = Color.green;
+            isGrounded = true;
+            attacked = false;
+        }
+        // draw a debug ray to show ray position
+        // You need to enable gizmos in the editor to see these
+        Debug.DrawRay(transform.position, Vector2.down * rayLength, hitColor);
+
     }
+
 }

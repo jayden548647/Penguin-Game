@@ -25,7 +25,7 @@ public class enemy_script : MonoBehaviour
             if (ex > px + 25)
             {
                 spriteRenderer.flipX = true;
-                rb.velocity = new Vector2(-25, rb.velocity.y);
+                rb.velocity = new Vector2(-32, rb.velocity.y);
             }
             if (px - 37 > ex)
             {
