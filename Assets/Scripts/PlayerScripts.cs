@@ -7,14 +7,13 @@ using UnityEngine.Experimental.GlobalIllumination;
 
 public class PlayerScripts : MonoBehaviour
 {
-    // Start is called before the first frame update
     Rigidbody2D player;
     public Animator anim;
     public SpriteRenderer sr;
     bool isGrounded = false;
     int collections = 0;
     public LayerMask groundLayerMask;
-    
+    HelperScript helper;
     
 
     bool IsGrounded()
@@ -30,12 +29,12 @@ public class PlayerScripts : MonoBehaviour
         return false;
     }
 
-
+    
     void Start()
     {
         player = GetComponent<Rigidbody2D>();
         groundLayerMask = LayerMask.GetMask("Ground");
-        
+        helper = gameObject.GetComponent<HelperScript>();
     }
     bool attacked = false;
 
@@ -71,9 +70,11 @@ public class PlayerScripts : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
+
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+
+    public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.tag == "collectable")
         {
@@ -147,6 +148,8 @@ public class PlayerScripts : MonoBehaviour
         }
 
         DoRayCollisionCheck();
+
+        
       
     }
     public void DoRayCollisionCheck()
@@ -167,6 +170,10 @@ public class PlayerScripts : MonoBehaviour
             hitColor = Color.green;
             isGrounded = true;
             attacked = false;
+        }
+        else
+        {
+            isGrounded=false;
         }
         // draw a debug ray to show ray position
         // You need to enable gizmos in the editor to see these
